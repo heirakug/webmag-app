@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Editor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -8,12 +8,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AdminLoginController extends Controller
+class EditorLoginController extends Controller
 {
     // ログイン画面呼び出し
     public function showLoginPage(): View
     {
-        return view('admin.auth.login');
+        return view('editor.auth.login');
     }
 
     // ログイン実行
@@ -21,8 +21,8 @@ class AdminLoginController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->route('admin.dashboard')->with([
+        if (Auth::guard('editor')->attempt($credentials)) {
+            return redirect()->route('editor.dashboard')->with([
                 'login_msg' => 'ログインしました。',
             ]);
         }

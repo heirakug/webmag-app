@@ -45,6 +45,16 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
+        'writer' => [
+            'driver' => 'session',
+            'provider' => 'writers',
+        ],
+
+        'editor' => [
+            'driver' => 'session',
+            'provider' => 'editors',
+        ],
     ],
 
     /*
@@ -78,6 +88,16 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'writers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Writer::class,
+        ],
+
+        'editors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Editor::class,
         ],
 
 

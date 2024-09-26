@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Writer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Writer;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
-class AdminRegisterController extends Controller
+class WriterRegisterController extends Controller
 {
     // 登録画面呼び出し
     public function create(): View
     {
-        return view('admin.auth.register');
+        return view('writer.auth.register');
     }
 
     // 登録実行
@@ -26,20 +26,20 @@ class AdminRegisterController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Admin::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Writer::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $admin = Admin::create([
+        $writer = Writer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($admin));
+        event(new Registered($writer));
 
-        Auth::guard('admin')->login($admin);
+        Auth::guard('writer')->login($writer);
 
-				return redirect('/admin/dashboard');
+				return redirect('/writer/dashboard');
     }
 }
