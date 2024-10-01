@@ -12,6 +12,9 @@ use App\Http\Controllers\Writer\WriterRegisterController;
 use App\Http\Controllers\Editor\EditorLoginController;
 use App\Http\Controllers\Editor\EditorRegisterController;
 
+// [add post 20241001]
+use App\Http\Controllers\PostController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -75,6 +78,16 @@ Route::group(['prefix' => 'writer'], function () {
         // ダッシュボード
         Route::get('dashboard', fn() => view('writer.dashboard'))
             ->name('writer.dashboard');
+
+        // ポスト一覧
+        Route::get('post', [PostController::class, 'index'])->name('writer.post.index');
+
+        // ポスト作成
+        Route::get('post/create', [PostController::class, 'create'])->name('writer.post.create');
+
+        // ポスト投稿
+        Route::post('post/store', [PostController::class, 'store'])->name('writer.post.store');
+
     });
 });
 
