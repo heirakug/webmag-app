@@ -15,9 +15,21 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
+                    @if (Auth::guard('writer')->check())
+
+                    <x-nav-link href="{{ route('writer.dashboard') }}" :active="request()->routeIs('writer.dashboard')" class="px-4">
+                        メインメニュー
+                    </x-nav-link>
+
+                    @else
+
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @endif
+
                 </div>
 
                 @endauth
@@ -145,34 +157,34 @@
             </div>
 
             @else
-                <!-- 認証前の場合 -->
+            <!-- 認証前の場合 -->
 
-                @if (Route::has('login'))
-        <nav class="-mx-3 flex flex-1 justify-end">
-            @auth
-            <a
-                href="{{ url('/dashboard') }}"
-                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                Dashboard
-            </a>
-            @else
-            <a
-                href="{{ route('login') }}"
-                class="rounded-md px-3 py-2 ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                Log in
-            </a>
+            @if (Route::has('login'))
+            <nav class="-mx-3 flex flex-1 justify-end">
+                @auth
+                <a
+                    href="{{ url('/dashboard') }}"
+                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+                    Dashboard
+                </a>
+                @else
+                <a
+                    href="{{ route('login') }}"
+                    class="rounded-md px-3 py-2 ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+                    Log in
+                </a>
 
-            @if (Route::has('register'))
-            <a
-                href="{{ route('register') }}"
-                class="rounded-md px-3 py-2 ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
-                Register
-            </a>
+                @if (Route::has('register'))
+                <a
+                    href="{{ route('register') }}"
+                    class="rounded-md px-3 py-2 ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+                    Register
+                </a>
+                @endif
+                @endauth
+            </nav>
             @endif
-            @endauth
-        </nav>
-        @endif
-        
+
             @endauth
 
         </div>
