@@ -87,7 +87,7 @@ Route::group(['prefix' => 'writer'], function () {
 
         // ポスト投稿
         Route::post('post/store', [PostController::class, 'store'])->name('writer.post.store');
-
+        
     });
 });
 

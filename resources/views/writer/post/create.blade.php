@@ -64,6 +64,12 @@
 
                             ClassicEditor
                                 .create(document.querySelector('#editor'), {
+                                    simpleUpload: {
+                                        uploadUrl: '/upload',
+                                        headers: {
+                                            'X-CSRF-TOKEN': 'YOUR-CSRF-TOKEN'
+                                        }
+                                    },
                                     plugins: [Essentials, Bold, Italic, Font, Paragraph],
                                     toolbar: [
                                         'undo', 'redo', '|', 'bold', 'italic', '|',
