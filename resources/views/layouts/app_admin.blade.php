@@ -17,6 +17,9 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.css" />
+
 </head>
 
 <body class="font-sans antialiased">
@@ -29,42 +32,64 @@
 
             <!-- サイドメニュー -->
             <aside class="bg-white shadow w-44 min-h-screen">
-                <div class="py-6 px-4 sm:px-6 lg:px-8">
+                <nav class="py-6 px-4 sm:px-6 lg:px-8">
+
                     <ul class="space-y-2">
-                        <li>
-                            <a href="" class="block p-2 text-gray-700 hover:bg-gray-200 rounded" onclick="toggleSubmenu(event, 'submenu-post')">投稿</a>
-                            <ul id="submenu-post" class="hidden pl-4 transition-all duration-300 ease-in-out max-h-0 overflow-hidden">
+
+                        <li class="relative group">
+                            <!-- メニューアイテム -->
+                            <a href="#"
+                                class="block p-2 text-gray-700 hover:bg-gray-200 rounded {{ request()->is('writer/post*') ? 'border-b-2 border-blue-500' : '' }}">
+                                投稿
+                            </a>
+
+                            <!-- サブメニュー -->
+                            <ul class="pl-4 hidden group-hover:block transition-all duration-300 ease-in-out">
                                 <li>
-                                    <a href="{{route('writer.post.index')}}" class="block p-2 text-gray-600 hover:bg-gray-200 rounded">投稿一覧</a>
+                                    <a href="{{ route('writer.post.index') }}"
+                                        class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/index') ? 'border-b-2 border-blue-500' : '' }}">
+                                        投稿一覧
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('writer.post.create')}}" class="block p-2 text-gray-600 hover:bg-gray-200 rounded">新規投稿</a>
+                                    <a href="{{ route('writer.post.create') }}"
+                                        class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/create') ? 'border-b-2 border-blue-500' : '' }}">
+                                        新規投稿
+                                    </a>
                                 </li>
                             </ul>
                         </li>
+
                     </ul>
-                </div>
+
+                </nav>
             </aside>
+
 
             <!-- Page Content -->
             <div class="ml-44 p-4"> <!-- サイドメニューの幅分のマージンを設定 -->
-                {{ $slot }}
+
+                <main>
+                    {{ $slot }}
                 </main>
             </div>
+
         </div>
 
         @stack('modals')
 
         @livewireScripts
+
+        <!-- <script>
+            function toggleSubmenu(event, submenuId) {
+                event.preventDefault(); // デフォルトのリンク動作を防ぐ
+                const submenu = document.getElementById(submenuId);
+                submenu.classList.toggle('hidden');
+                submenu.classList.toggle('max-h-0');
+                submenu.classList.toggle('max-h-screen'); // スクリーンに合わせて高さを調整
+            }
+        </script> -->
+
 </body>
-<script>
-        function toggleSubmenu(event, submenuId) {
-            event.preventDefault(); // デフォルトのリンク動作を防ぐ
-            const submenu = document.getElementById(submenuId);
-            submenu.classList.toggle('hidden');
-            submenu.classList.toggle('max-h-0');
-            submenu.classList.toggle('max-h-screen'); // スクリーンに合わせて高さを調整
-        }
-    </script>
 
 </html>
