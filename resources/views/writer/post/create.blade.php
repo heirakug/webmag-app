@@ -1,5 +1,18 @@
 <x-admin-layout>
 
+    <x-slot name="header">
+        <ul>
+            <li>
+                <a href="#">投稿</a>
+                <ul>
+                    <li>
+                        <a href="#">新規投稿</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -34,13 +47,33 @@
                         </div>
 
                         <!-- コンテンツ -->
-                        <div class="mb-6">
-                            <label for="content" class="block text-sm font-medium text-gray-700">本文</label>
-                            <textarea name="content" id="content" rows="10" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('content') border-red-500 @enderror">{{ old('content') }}</textarea>
-                            @error('content')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
+                        <div class="mb-4" id="editor">
                         </div>
+
+                        <script src="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.umd.js"></script>
+
+                        <script>
+                            const {
+                                ClassicEditor,
+                                Essentials,
+                                Bold,
+                                Italic,
+                                Font,
+                                Paragraph
+                            } = CKEDITOR;
+
+                            ClassicEditor
+                                .create(document.querySelector('#editor'), {
+                                    plugins: [Essentials, Bold, Italic, Font, Paragraph],
+                                    toolbar: [
+                                        'undo', 'redo', '|', 'bold', 'italic', '|',
+                                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                                    ]
+                                })
+                                .then( /* ... */ )
+                                .catch( /* ... */ );
+                        </script>
+
 
                         <!-- 画像アップロード -->
                         <div class="mb-6">
@@ -50,14 +83,6 @@
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <textarea id="ckeditor" name="pageBody"></textarea>
-
-                        {{-- CKEditor --}}
-                        <script src="//cdn.ckeditor.com/4.15.0/full/ckeditor.js"></script>
-                        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-                        <script src="js/ckeditor.js"></script>
-
 
                         <!-- 公開・下書き -->
                         <div class="mb-6">
