@@ -18,8 +18,6 @@
     <!-- Styles -->
     @livewireStyles
 
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.css" />
-
 </head>
 
 <body class="font-sans antialiased">
@@ -65,11 +63,11 @@
                 </nav>
             </aside>
 
-
             <!-- Page Content -->
             <div class="ml-44 p-4"> <!-- サイドメニューの幅分のマージンを設定 -->
 
                 <main>
+                
                     {{ $slot }}
                 </main>
             </div>

@@ -11,4 +11,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    resolve: {
+        alias: {
+            '@': '/resources/js',
+        },
+    },
+    optimizeDeps: {
+        include: ['ckeditor5'],
+    },
 });

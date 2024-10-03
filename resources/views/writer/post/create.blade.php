@@ -50,7 +50,7 @@
                         <div class="mb-4" id="editor">
                         </div>
 
-                        <script src="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.umd.js"></script>
+                        <!-- <script src="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.umd.js"></script>
 
                         <script>
                             const {
@@ -78,7 +78,7 @@
                                 })
                                 .then( /* ... */ )
                                 .catch( /* ... */ );
-                        </script>
+                        </script> -->
 
 
                         <!-- 画像アップロード -->

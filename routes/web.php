@@ -15,6 +15,9 @@ use App\Http\Controllers\Editor\EditorRegisterController;
 // [add post 20241001]
 use App\Http\Controllers\PostController;
 
+// [add post 20241002]
+use App\Http\Controllers\UploadController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -87,7 +90,13 @@ Route::group(['prefix' => 'writer'], function () {
 
         // ポスト投稿
         Route::post('post/store', [PostController::class, 'store'])->name('writer.post.store');
+
+        Route::get('/editor', function () {
+            return view('editor');
+        });
         
+        Route::post('/upload', [UploadController::class, 'upload'])->name('ckeditor.upload');
+
     });
 });
 

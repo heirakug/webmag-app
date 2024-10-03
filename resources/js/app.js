@@ -1,1 +1,2 @@
+import './ckeditor';
 import './bootstrap';
