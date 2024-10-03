@@ -52,6 +52,9 @@ class PostController extends Controller
     // ポスト投稿
     public function store(Request $request): RedirectResponse
     {
+
+        //dd($request);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             // 'category' => 'required|string|max:100',

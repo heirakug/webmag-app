@@ -56,7 +56,7 @@
                     <!-- 投稿フォーム -->
                     <form action="{{ route('writer.post.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        
+
                         <!-- タイトル -->
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">タイトル</label>
@@ -82,20 +82,22 @@
                         </div>
 
                         <!-- コンテンツ -->
-                        <div class="mb-4">
+                        <!-- <div class="mb-4">
                             <textarea id="editor" name="body">{{ old('body') }}</textarea>
                             @error('body')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> -->
 
-                        <!-- 画像アップロード -->
-                        <div class="mb-6">
-                            <label for="image" class="block text-sm font-medium text-gray-700">画像アップロード</label>
-                            <input type="file" name="image" id="image" class="mt-1 block w-full @error('image') border-red-500 @enderror">
-                            @error('image')
-                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                            @enderror
+                        <div class="main-container mb-4">
+                            <div class="editor-container editor-container_classic-editor" id="editor-container">
+                                <div class="editor-container__editor">
+                                    <textarea id="editor" name="body">{{ old('body') }}</textarea>
+                                    @error('body')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 公開・下書き -->

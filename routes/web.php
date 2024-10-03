@@ -22,6 +22,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/ckeditor/upload', [UploadController::class, 'upload'])->name('ckeditor.upload');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -30,6 +32,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+
 });
 
 /*
@@ -99,12 +103,6 @@ Route::group(['prefix' => 'writer'], function () {
 
         // ポスト削除
         Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('writer.post.destroy');
-
-        Route::get('/editor', function () {
-            return view('editor');
-        });
-
-        Route::post('/upload', [UploadController::class, 'upload'])->name('ckeditor.upload');
 
     });
 });

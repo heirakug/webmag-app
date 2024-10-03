@@ -35,14 +35,14 @@
                     <h2 class="text-2xl font-semibold mb-4">投稿の編集</h2>
 
                     @if ($errors->any())
-                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <strong class="font-bold">入力内容にエラーがあります。</strong>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">入力内容にエラーがあります。</strong>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
                     <form action="{{ route('writer.post.update', $post->id) }}" method="POST" enctype="multipart/form-data">
@@ -53,7 +53,7 @@
                             <label for="title" class="block text-sm font-medium text-gray-700">タイトル</label>
                             <input type="text" name="title" id="title" value="{{ old('title', $post->title) }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('title') border-red-500 @enderror">
                             @error('title')
-                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -66,27 +66,28 @@
                                 <option value="news" {{ old('category', $post->category) == 'news' ? 'selected' : '' }}>ニュース</option>
                             </select>
                             @error('category')
-                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="mb-4">
+                        <!-- <div class="mb-4">
                             <label for="body" class="block text-sm font-medium text-gray-700">本文</label>
                             <textarea id="editor" name="body">{{ old('body', $post->body) }}</textarea>
                             @error('body')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> -->
 
-                        <div class="mb-6">
-                            <label for="image" class="block text-sm font-medium text-gray-700">画像アップロード</label>
-                            <input type="file" name="image" id="image" class="mt-1 block w-full @error('image') border-red-500 @enderror">
-                            @if($post->image)
-                                <p class="mt-2">現在の画像: {{ $post->image }}</p>
-                            @endif
-                            @error('image')
-                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                            @enderror
+                        <div class="main-container mb-4">
+                            <label for="body" class="block text-sm font-medium text-gray-700">本文</label>
+                            <div class="editor-container editor-container_classic-editor" id="editor-container">
+                                <div class="editor-container__editor">
+                                    <textarea id="editor" name="body">{{ old('body', $post->body) }}</textarea>
+                                    @error('body')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mb-6">
@@ -100,7 +101,7 @@
                                 <label for="published" class="ml-2 text-sm font-medium text-gray-700">公開</label>
                             </div>
                             @error('status')
-                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
