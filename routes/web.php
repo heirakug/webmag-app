@@ -88,13 +88,22 @@ Route::group(['prefix' => 'writer'], function () {
         // ポスト作成
         Route::get('post/create', [PostController::class, 'create'])->name('writer.post.create');
 
+        // ポスト編集
+        Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('writer.post.edit');
+
         // ポスト投稿
         Route::post('post/store', [PostController::class, 'store'])->name('writer.post.store');
+
+        // ポスト更新
+        Route::put('/post/{id}', [PostController::class, 'update'])->name('writer.post.update');
+
+        // ポスト削除
+        Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('writer.post.destroy');
 
         Route::get('/editor', function () {
             return view('editor');
         });
-        
+
         Route::post('/upload', [UploadController::class, 'upload'])->name('ckeditor.upload');
 
     });

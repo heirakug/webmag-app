@@ -26,51 +26,17 @@
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
-        <div class="flex">
+        <div class="flex flex-row">
 
             <!-- サイドメニュー -->
-            <aside class="bg-white shadow w-44 min-h-screen">
-                <nav class="py-6 px-4 sm:px-6 lg:px-8">
-
-                    <ul class="space-y-2">
-
-                        <li class="relative group">
-                            <!-- メニューアイテム -->
-                            <a href="#"
-                                class="block p-2 text-gray-700 hover:bg-gray-200 rounded {{ request()->is('writer/post*') ? 'border-b-2 border-blue-500' : '' }}">
-                                投稿
-                            </a>
-
-                            <!-- サブメニュー -->
-                            <ul class="pl-4 hidden group-hover:block transition-all duration-300 ease-in-out">
-                                <li>
-                                    <a href="{{ route('writer.post.index') }}"
-                                        class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/index') ? 'border-b-2 border-blue-500' : '' }}">
-                                        投稿一覧
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('writer.post.create') }}"
-                                        class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/create') ? 'border-b-2 border-blue-500' : '' }}">
-                                        新規投稿
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
-
-                </nav>
-            </aside>
+            @if('aside')
+            {{$aside}}
+            @endif('aside')
 
             <!-- Page Content -->
-            <div class="ml-44 p-4"> <!-- サイドメニューの幅分のマージンを設定 -->
-
-                <main>
-                
-                    {{ $slot }}
-                </main>
-            </div>
+            <main class="flex-grow max-w-2xl">
+                {{ $slot }}
+            </main>
 
         </div>
 

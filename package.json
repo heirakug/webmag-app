@@ -16,10 +16,6 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^43.2.0",
-        "@ckeditor/ckeditor5-core": "^43.1.1",
-        "@ckeditor/ckeditor5-ui": "^43.1.1",
-        "@ckeditor/ckeditor5-upload": "^43.1.1",
-        "ckeditor5": "^43.1.1"
+        "ckeditor5": "^43.2.0"
     }
 }

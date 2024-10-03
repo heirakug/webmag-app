@@ -1,0 +1,12 @@
+.ck-content h1 {
+    @apply text-4xl font-bold mb-4 text-gray-900;
+}
+
+.ck-content h2 {
+    @apply text-3xl font-semibold mb-3 text-gray-800;
+}
+
+.ck-content ul,
+.ck-content ol {
+    @apply ml-[2.666em] mb-[.8em];
+}
