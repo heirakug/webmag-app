@@ -87,7 +87,7 @@ Route::group(['prefix' => 'writer'], function () {
             ->name('writer.dashboard');
 
         // ポスト一覧
-        Route::get('post', [PostController::class, 'index'])->name('writer.post.index');
+        Route::get('post/list', [PostController::class, 'list'])->name('writer.post.list');
 
         // ポスト作成
         Route::get('post/create', [PostController::class, 'create'])->name('writer.post.create');

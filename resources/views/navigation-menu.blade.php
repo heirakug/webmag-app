@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="/">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -17,10 +17,6 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
                     @if (Auth::guard('writer')->check())
-
-                    <x-nav-link href="{{ route('writer.dashboard') }}" :active="request()->routeIs('writer.dashboard')" class="px-4">
-                        メインメニュー
-                    </x-nav-link>
 
                     @else
 

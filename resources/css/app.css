@@ -1,4 +1,5 @@
 @import 'custom.css';
+@import '@mdi/font/css/materialdesignicons.min.css';
 
 @tailwind base;
 @tailwind components;

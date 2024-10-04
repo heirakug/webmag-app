@@ -18,10 +18,13 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('title_background')->nullable();
             $table->string('category')->nullable();
             $table->text('body');
+            $table->json('tags')->nullable();
             $table->enum('status', [
                 'draft',
+                'ready_for_review',
                 'submitted',
                 'editor_review',
                 'revision_required',

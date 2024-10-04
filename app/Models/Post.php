@@ -13,6 +13,7 @@ class Post extends Model
 
     // ステータス定数
     public const STATUS_DRAFT = 'draft';
+    public const STATUS_READY_FOR_REVIEW = 'ready_for_review';
     public const STATUS_SUBMITTED = 'submitted';
     public const STATUS_EDITOR_REVIEW = 'editor_review';
     public const STATUS_REVISION_REQUIRED = 'revision_required';
@@ -23,7 +24,8 @@ class Post extends Model
 
     // ステータスリスト
     public const STATUS_LIST = [
-        self::STATUS_DRAFT => '下書き',
+        self::STATUS_DRAFT => '作業中',
+        self::STATUS_READY_FOR_REVIEW => 'レビュー準備完了',
         self::STATUS_SUBMITTED => '投稿済み',
         self::STATUS_EDITOR_REVIEW => '編集者レビュー中',
         self::STATUS_REVISION_REQUIRED => '修正要求',
@@ -35,8 +37,10 @@ class Post extends Model
 
     protected $fillable = [
         'title',
+        'title_background',
         'category',
         'body',
+        'tags',
         'status',
         'writer_id',
         'writer_name',

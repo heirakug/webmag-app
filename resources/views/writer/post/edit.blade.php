@@ -1,32 +1,4 @@
 <x-admin-layout>
-    <x-slot name="aside">
-        <aside class="bg-white shadow  min-h-screen w-64 flex-shrink-0">
-            <nav class="py-6 px-4 sm:px-6 lg:px-8">
-                <ul class="space-y-2">
-                    <li class="relative group">
-                        <a href="#"
-                            class="block p-2 text-gray-700 hover:bg-gray-200 rounded {{ request()->is('writer/post*') ? 'border-b-2 border-blue-500' : '' }}">
-                            投稿
-                        </a>
-                        <ul class="pl-4 hidden group-hover:block transition-all duration-300 ease-in-out">
-                            <li>
-                                <a href="{{ route('writer.post.index') }}"
-                                    class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/index') ? 'border-b-2 border-blue-500' : '' }}">
-                                    投稿一覧
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('writer.post.create') }}"
-                                    class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/create') ? 'border-b-2 border-blue-500' : '' }}">
-                                    新規投稿
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-    </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -58,6 +30,25 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="title_background" class="block text-sm font-medium text-gray-700">タイトル背景画像</label>
+                            <div class="mt-1 flex items-center">
+                                <input type="file" name="title_background" id="title_background" accept="image/*" class="hidden" onchange="previewImage(this);">
+                                <label for="title_background" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    画像を選択
+                                </label>
+                                <span id="file-name" class="ml-3 text-sm text-gray-500"></span>
+                            </div>
+                            <div id="image-preview" class="mt-2">
+                                @if($post->title_background)
+                                <img src="{{ asset('storage/' . $post->title_background) }}" alt="現在の背景画像" class="h-32 w-auto">
+                                @endif
+                            </div>
+                            @error('title_background')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
                             <label for="category" class="block text-sm font-medium text-gray-700">カテゴリ</label>
                             <select name="category" id="category" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('category') border-red-500 @enderror">
                                 <option value="">選択してください</option>
@@ -70,14 +61,7 @@
                             @enderror
                         </div>
 
-                        <!-- <div class="mb-4">
-                            <label for="body" class="block text-sm font-medium text-gray-700">本文</label>
-                            <textarea id="editor" name="body">{{ old('body', $post->body) }}</textarea>
-                            @error('body')
-                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                            @enderror
-                        </div> -->
-
+                        <!-- ボディ -->
                         <div class="main-container mb-4">
                             <label for="body" class="block text-sm font-medium text-gray-700">本文</label>
                             <div class="editor-container editor-container_classic-editor" id="editor-container">
@@ -90,11 +74,25 @@
                             </div>
                         </div>
 
+                        <!-- タグ -->
+                        <div class="mb-4">
+                            <label for="tags" class="block text-sm font-medium text-gray-700">タグ（カンマ区切りで入力）</label>
+                            <input type="text" name="tags" id="tags" value="{{ old('tags', $post->tags ? implode(', ', json_decode($post->tags, true)) : '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('tags') border-red-500 @enderror">
+                            <p class="mt-1 text-sm text-gray-500">複数のタグはカンマ（,）で区切って入力してください</p>
+                            @error('tags')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700">ステータス</label>
                             <div class="mt-2 flex items-center">
                                 <input type="radio" name="status" value="draft" id="draft" {{ old('status', $post->status) == 'draft' ? 'checked' : '' }}>
-                                <label for="draft" class="ml-2 text-sm font-medium text-gray-700">下書き</label>
+                                <label for="draft" class="ml-2 text-sm font-medium text-gray-700">準備中</label>
+                            </div>
+                            <div class="mt-2 flex items-center">
+                                <input type="radio" name="status" value="ready_for_review" id="ready_for_review" {{ old('status', $post->status) == 'ready_for_review' ? 'checked' : '' }}>
+                                <label for="ready_for_review" class="ml-2 text-sm font-medium text-gray-700">レビュー依頼</label>
                             </div>
                             <div class="mt-2 flex items-center">
                                 <input type="radio" name="status" value="published" id="published" {{ old('status', $post->status) == 'published' ? 'checked' : '' }}>
@@ -115,4 +113,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const fileName = file.name;
+                document.getElementById('file-name').textContent = fileName;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="プレビュー" class="h-32 w-auto">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
 </x-admin-layout>

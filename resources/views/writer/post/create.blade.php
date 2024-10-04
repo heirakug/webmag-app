@@ -1,46 +1,8 @@
 <x-admin-layout>
-
-    <x-slot name="aside">
-        <aside class="bg-white shadow  min-h-screen w-64 flex-shrink-0">
-            <nav class="py-6 px-4 sm:px-6 lg:px-8">
-
-                <ul class="space-y-2">
-
-                    <li class="relative group">
-                        <!-- メニューアイテム -->
-                        <a href="#"
-                            class="block p-2 text-gray-700 hover:bg-gray-200 rounded {{ request()->is('writer/post*') ? 'border-b-2 border-blue-500' : '' }}">
-                            投稿
-                        </a>
-
-                        <!-- サブメニュー -->
-                        <ul class="pl-4 hidden group-hover:block transition-all duration-300 ease-in-out">
-                            <li>
-                                <a href="{{ route('writer.post.index') }}"
-                                    class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/index') ? 'border-b-2 border-blue-500' : '' }}">
-                                    投稿一覧
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('writer.post.create') }}"
-                                    class="block p-2 text-gray-600 hover:bg-gray-200 rounded {{ request()->is('writer/post/create') ? 'border-b-2 border-blue-500' : '' }}">
-                                    新規投稿
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ul>
-
-            </nav>
-        </aside>
-    </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-
                     <!-- バリデーションエラーの全体表示 -->
                     @if ($errors->any())
                     <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -66,6 +28,16 @@
                             @enderror
                         </div>
 
+                        <!-- タイトル背景画像 -->
+                        <div class="mb-4">
+                            <label for="title_background" class="block text-sm font-medium text-gray-700">タイトル背景画像</label>
+                            <input type="file" name="title_background" id="title_background" accept="image/*" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('title_background') border-red-500 @enderror" onchange="previewImage(this);">
+                            <div id="image-preview" class="mt-2"></div>
+                            @error('title_background')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- カテゴリ -->
                         <div class="mb-4">
                             <label for="category" class="block text-sm font-medium text-gray-700">カテゴリ</label>
@@ -81,18 +53,12 @@
                             @enderror
                         </div>
 
-                        <!-- コンテンツ -->
-                        <!-- <div class="mb-4">
-                            <textarea id="editor" name="body">{{ old('body') }}</textarea>
-                            @error('body')
-                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-                            @enderror
-                        </div> -->
-
-                        <div class="main-container mb-4">
+                        <!-- 本文エディタ -->
+                        <div class="mb-4">
+                            <label for="editor" class="block text-sm font-medium text-gray-700">本文</label>
                             <div class="editor-container editor-container_classic-editor" id="editor-container">
                                 <div class="editor-container__editor">
-                                    <textarea id="editor" name="body">{{ old('body') }}</textarea>
+                                    <textarea id="editor" name="body" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('body') border-red-500 @enderror">{{ old('body') }}</textarea>
                                     @error('body')
                                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                     @enderror
@@ -100,16 +66,28 @@
                             </div>
                         </div>
 
+                        <!-- タグ -->
+                        <div class="mb-4">
+                            <label for="tags" class="block text-sm font-medium text-gray-700">タグ（カンマ区切りで入力）</label>
+                            <input type="text" name="tags" id="tags" value="{{ old('tags') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('tags') border-red-500 @enderror">
+                            <p class="mt-1 text-sm text-gray-500">複数のタグはカンマ（,）で区切って入力してください</p>
+                            @error('tags')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- 公開・下書き -->
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700">ステータス</label>
-                            <div class="mt-2 flex items-center">
-                                <input type="radio" name="status" value="published" id="published" {{ old('status', 'published') == 'published' ? 'checked' : '' }}>
-                                <label for="published" class="ml-2 text-sm font-medium text-gray-700">公開</label>
-                            </div>
-                            <div class="mt-2 flex items-center">
-                                <input type="radio" name="status" value="draft" id="draft" {{ old('status') == 'draft' ? 'checked' : '' }}>
-                                <label for="draft" class="ml-2 text-sm font-medium text-gray-700">下書き</label>
+                            <div class="mt-2">
+                                <div class="flex items-center mt-2">
+                                    <input type="radio" name="status" value="draft" id="draft" {{ old('status') == 'draft' ? 'checked' : '' }} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                                    <label for="draft" class="ml-2 block text-sm text-gray-700">準備中</label>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <input type="radio" name="status" value="ready_for_review" id="ready_for_review" {{ old('status') == 'ready_for_review' ? 'checked' : '' }} class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                                    <label for="ready_for_review" class="ml-2 block text-sm text-gray-700">レビュー依頼</label>
+                                </div>
                             </div>
                             @error('status')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
@@ -128,4 +106,17 @@
         </div>
     </div>
 
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="プレビュー" class="mt-2 h-32 w-auto">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </x-admin-layout>
