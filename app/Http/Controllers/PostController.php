@@ -83,6 +83,7 @@ class PostController extends Controller
             'title_background' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category' => 'required|string|max:100',
             'body' => ['required', 'string', new SafeHtml],
+            'excerpt' => 'string|max:200',
             'tags' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_keys(Post::STATUS_LIST)),
         ]);
@@ -164,6 +165,7 @@ class PostController extends Controller
                 'title_background' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'category' => 'required|string|max:100',
                 'body' => ['required', 'string', new SafeHtml],
+                'excerpt' => 'string|max:200',
                 'tags' => 'nullable|string',
                 'status' => 'required|string|in:' . implode(',', array_keys(Post::STATUS_LIST)),
             ]);

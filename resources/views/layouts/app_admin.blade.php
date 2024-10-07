@@ -8,10 +8,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <!-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> -->
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -23,31 +19,35 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100" x-data="{ sidebarOpen: true }">
         @livewire('navigation-menu')
 
-        <div class="flex flex-row">
-
+        <div class="flex">
             <!-- サイドメニュー -->
-            <aside class="bg-white shadow  min-h-screen w-64 flex-shrink-0">
-                <nav class="py-6 px-4 sm:px-6 lg:px-8">
+            <aside :class="sidebarOpen ? 'w-[12em]' : 'w-16'" class="bg-white shadow min-h-screen">
+                <button @click="sidebarOpen = !sidebarOpen" class="p-4 focus:outline-none">
+                    <span x-show="sidebarOpen" class="mdi mdi-arrow-left"></span>
+                    <span x-show="!sidebarOpen" class="mdi mdi-arrow-right"></span>
+                </button>
 
+                <nav class="py-6 px-4 sm:px-6 lg:px-8">
                     <ul class="space-y-2">
 
-                        <li>
+                        <li class="flex items-center h-[40px]">
                             <span class="mdi mdi-view-dashboard"></span>
-                            <a href="{{route('writer.dashboard')}}" class="admin-menu">ダッシュボード</a>
+                            <span x-show="sidebarOpen" class="ml-2">
+                                <a class="block admin-menu w-[8em]" href="{{route('writer.dashboard')}}">ダッシュボード</a>
+                            </span>
                         </li>
 
-                        <li class="relative group">
-                            <!-- メニューアイテム -->
-                            <span class="mdi mdi-post"></span>
-                            <a href="#" class="admin-menu">
-                                投稿
-                            </a>
+                        <li class="relative group flex flex-col tems-center">
+                            <div>
+                                <span class="mdi mdi-post"></span>
+                                <span x-show="sidebarOpen" class="ml-2">投稿</span>
+                            </div>
 
                             <!-- サブメニュー -->
-                            <ul class="pl-4 transition-all duration-300 ease-in-out {{ request()->is('*/post/*') ? '' : 'hidden group-hover:block' }}">
+                            <ul class="pl-4 transition-all duration-300 ease-in-out ml-[2px]" x-show="sidebarOpen">
                                 <li>
                                     <a href="{{ route('writer.post.list') }}"
                                         class="block admin-menu {{ request()->is('writer/post/list') ? 'bg-gray-200' : '' }}">
@@ -64,31 +64,18 @@
                         </li>
 
                     </ul>
-
                 </nav>
             </aside>
 
             <!-- Page Content -->
-            <main class="flex-grow max-w-2xl">
+            <main class="flex-grow">
                 {{ $slot }}
             </main>
-
         </div>
 
         @stack('modals')
-
         @livewireScripts
-
-        <!-- <script>
-            function toggleSubmenu(event, submenuId) {
-                event.preventDefault(); // デフォルトのリンク動作を防ぐ
-                const submenu = document.getElementById(submenuId);
-                submenu.classList.toggle('hidden');
-                submenu.classList.toggle('max-h-0');
-                submenu.classList.toggle('max-h-screen'); // スクリーンに合わせて高さを調整
-            }
-        </script> -->
-
+    </div>
 </body>
 
 </html>

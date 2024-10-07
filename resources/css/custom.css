@@ -18,12 +18,12 @@
     @apply p-4 bg-gray-200 w-full rounded;
 }
 
-.main-container {
+/* .main-container {
     font-family: 'Lato';
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-}
+} */
 
 .ck-content {
     font-family: 'Lato';

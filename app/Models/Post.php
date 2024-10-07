@@ -40,6 +40,7 @@ class Post extends Model
         'title_background',
         'category',
         'body',
+        'excerpt',
         'tags',
         'status',
         'writer_id',

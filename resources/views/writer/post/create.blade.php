@@ -1,8 +1,8 @@
 <x-admin-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="overflow-hidden">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-xs sm:max-w-xl w-full px-4 sm:px-6 lg:px-8 overflow-hidden">
+
                     <!-- バリデーションエラーの全体表示 -->
                     @if ($errors->any())
                     <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -16,7 +16,7 @@
                     @endif
 
                     <!-- 投稿フォーム -->
-                    <form action="{{ route('writer.post.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('writer.post.store') }}" method="POST" enctype="multipart/form-data" class="max-w-xl"> <!-- max-w-fullを追加 -->
                         @csrf
 
                         <!-- タイトル -->
@@ -66,6 +66,16 @@
                             </div>
                         </div>
 
+                        <!-- 抜粋 -->
+                        <div class="mb-4">
+                            <label for="excerpt" class="block text-sm font-medium text-gray-700">抜粋</label>
+                            <textarea name="excerpt" id="excerpt" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('excerpt') border-red-500 @enderror">{{ old('excerpt') }}</textarea>
+                            <p class="mt-1 text-sm text-gray-500">記事の簡単な概要や抜粋を入力してください</p>
+                            @error('excerpt')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- タグ -->
                         <div class="mb-4">
                             <label for="tags" class="block text-sm font-medium text-gray-700">タグ（カンマ区切りで入力）</label>
@@ -101,8 +111,9 @@
                             </button>
                         </div>
                     </form>
+
                 </div>
-            </div>
+
         </div>
     </div>
 

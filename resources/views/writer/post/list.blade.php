@@ -1,7 +1,8 @@
 <x-admin-layout>
 
-    <div class="py-12">
+<div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
             <!-- フラッシュメッセージの表示 -->
             @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -9,7 +10,7 @@
             </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+            <div class="md:max-w-2xl w-full px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <h2 class="text-2xl font-semibold mb-4">投稿リスト</h2>
 
                 @if($posts->isEmpty())

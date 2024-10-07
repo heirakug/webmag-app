@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('title_background')->nullable();
             $table->string('category')->nullable();
             $table->text('body');
+            $table->text('excerpt')->nullable();
             $table->json('tags')->nullable();
             $table->enum('status', [
                 'draft',
