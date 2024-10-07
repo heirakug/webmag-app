@@ -32,8 +32,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-
 });
 
 /*
@@ -98,12 +96,14 @@ Route::group(['prefix' => 'writer'], function () {
         // ポスト投稿
         Route::post('post/store', [PostController::class, 'store'])->name('writer.post.store');
 
+        // ポストプレビュー
+        Route::post('/post/preview', [PostController::class, 'preview'])->name('writer.post.preview');
+
         // ポスト更新
         Route::put('/post/{id}', [PostController::class, 'update'])->name('writer.post.update');
 
         // ポスト削除
         Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('writer.post.destroy');
-
     });
 });
 

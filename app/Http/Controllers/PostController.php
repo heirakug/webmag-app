@@ -199,9 +199,93 @@ class PostController extends Controller
             $validated['title_background'] = $imagePath;
         }
 
+        if ($request->post_type === "preview") {
+            // セッションにデータを保存しておく
+            session()->flashInput($request->input());
+
+            // プレビュー用のビューにデータを渡して表示
+            return view('writer.post.preview', [
+                'post' => $post,
+            ]);
+        }
+
         $post->update($validated);
 
         return redirect()->route('writer.post.list')->with('success', '投稿が更新されました。');
+    }
+
+    // ::::::::::
+    // ::::::::::
+    // ::::::::::
+    // ポストプレビュー
+    // ::::::::::
+    // ::::::::::
+    // ::::::::::
+    public function preview(Request $request)
+    {
+
+        // dd($request);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'title_background' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category' => 'required|string|max:100',
+            'body' => ['required', 'string', new SafeHtml],
+            'excerpt' => 'string|max:200',
+            'tags' => 'nullable|string',
+            'status' => 'required|string|in:' . implode(',', array_keys(Post::STATUS_LIST)),
+        ]);
+
+        // HTMLを安全に保存
+        $validated['body'] = Purifier::clean($validated['body']);
+
+        // タグの処理
+        if ($request->has('tags')) {
+            $tags = array_map('trim', explode(',', $request->tags));
+            $tags = array_filter($tags); // 空の要素を削除
+            $validated['tags'] = json_encode(array_values($tags));
+        } else {
+            $validated['tags'] = null;
+        }
+
+        // 新しい投稿を作成
+        $post = new Post($validated);
+
+        // ライターの情報取得
+        $writer_id = auth('writer')->id();
+        $writer_name = Writer::find($writer_id)->value('name');
+
+        $post->writer_id = $writer_id;
+        $post->writer_name = $writer_name;
+
+        // エディターの場合、editor_idとeditor_nameも設定
+        if (Auth::guard('editor')->check()) {
+            $editor_id = auth('editor')->id();
+            $editor_name = Editor::find($editor_id)->value('name');
+
+            $post->editor_id = $editor_id;
+            $post->editor_name = $editor_name;
+        }
+
+        // 画像のアップロード処理
+        if ($request->hasFile('title_background')) {
+            $image = $request->file('title_background');
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            // 画像を保存し、パスを取得
+            $path = Storage::disk('public')->putFileAs('title_backgrounds', $image, $filename);
+
+            // データベースに保存するパスを設定
+            $post->title_background = $path;
+        }
+
+        // セッションにデータを保存しておく
+        session()->flashInput($request->input());
+
+        // プレビュー用のビューにデータを渡して表示
+        return view('writer.post.preview', [
+            'post' => $post,
+        ]);
     }
 
     // ::::::::::
